@@ -1,7 +1,6 @@
 package br.com.online.livraria.services;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.online.livraria.dto.LivroDto;
 import br.com.online.livraria.dto.LivroFormDto;
+import br.com.online.livraria.modelo.Autor;
 import br.com.online.livraria.modelo.Livro;
 import br.com.online.livraria.repository.LivroRepository;
 
@@ -22,12 +22,13 @@ public class LivroService {
 	
 	@Autowired
 	private LivroRepository livroRepository;
-	private List<Livro> livros = new ArrayList<>();
-	private ModelMapper modelMapper = new ModelMapper();
 	
 	@Autowired
-	private AutorService autor;
+	private AutorService autorService;
 	
+	private ModelMapper modelMapper = new ModelMapper();
+	
+
 	public Page<LivroDto> listar(Pageable paginacao) {
 		Page<Livro> livros = livroRepository.findAll(paginacao);
 		return livros
@@ -35,14 +36,16 @@ public class LivroService {
 	}
 	
 	@Transactional
-	public String cadastrar(LivroFormDto dto) {
+	public LivroDto cadastrar(LivroFormDto dto) {
 		Livro livro = modelMapper.map(dto, Livro.class);
-		if (autor.verificaAutor(dto.getAutor())) {
-			livros.add(livro);
-			return "OK";
-		}else {
-			return "Autor inexistente!";
-		}
+		Optional<Autor> autor = autorService.buscarPorId(dto.getAutorId());
 		
+		if(autor.isEmpty()){
+			throw new IllegalArgumentException("Autor não encontrado!");
+		}else {
+			livro.setAutor(autor.get());
+		}		
+		livroRepository.save(livro);
+		return modelMapper.map(livro, LivroDto.class);
 	}
 }

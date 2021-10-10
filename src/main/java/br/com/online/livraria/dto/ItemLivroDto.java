@@ -9,8 +9,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ItemLivroDto {
 
-	private String autor;
-	private Integer quantidadeLivros;
+	private String nomeAutor;
+	private Long quantidadeLivros;
 	@Digits(integer = 2, fraction = 2)
 	private Double percentual;
 }

@@ -1,4 +1,3 @@
-use livraria;
 CREATE TABLE autores (
   id bigint PRIMARY KEY AUTO_INCREMENT,
   nome varchar(255),
@@ -14,6 +13,6 @@ CREATE TABLE livros (
   quantidade_paginas int
   );
   
-  alter table livros add column  id_autor bigint not null ;
-  alter table livros add foreign key(id_autor) references autores (id);
+  alter table livros add column  autor_id bigint not null ;
+  alter table livros add foreign key(autor_id) references autores (id);
 

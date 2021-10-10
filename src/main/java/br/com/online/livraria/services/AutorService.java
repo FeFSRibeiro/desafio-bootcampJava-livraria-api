@@ -1,7 +1,6 @@
 package br.com.online.livraria.services;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -22,7 +21,8 @@ public class AutorService {
 	
 	@Autowired
 	private AutorRepository autorRepository;
-	private List<Autor> autores = new ArrayList<>();
+	
+
 	private ModelMapper modelMapper = new ModelMapper();
 	
 	public Page<AutorDto> listar(Pageable paginacao) {
@@ -32,15 +32,13 @@ public class AutorService {
 	}
 	
 	@Transactional
-	public void cadastrar(AutorFormDto dto) {
+	public AutorDto cadastrar(AutorFormDto dto) {
 		Autor autor = modelMapper.map(dto, Autor.class);
-		autores.add(autor);
+		autorRepository.save(autor);
+		return modelMapper.map(autor, AutorDto.class);
 	}
-	
-	
-	public boolean verificaAutor(String nomeAutor) {
-		return autores
-				.stream()
-				.anyMatch(autor -> nomeAutor.equals(autor.getNome()));
+
+	public Optional<Autor> buscarPorId(Long autorId) {
+		return autorRepository.findById(autorId);
 	}
 }
