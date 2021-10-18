@@ -2,7 +2,6 @@ package br.com.online.livraria.dto;
 
 import java.time.LocalDate;
 
-import br.com.online.livraria.modelo.Autor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +13,6 @@ public class LivroDto {
 	private Long id;
 	private String titulo;
 	private LocalDate dataLancamento;
-	private int quantidadePaginas;
-	private Autor autor;
+	private Integer quantidadePaginas;
+	private AutorDto autor;
 }
