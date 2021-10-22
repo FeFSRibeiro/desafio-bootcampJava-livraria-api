@@ -33,4 +33,16 @@ public class Autor {
 	@Column(name = "mini_curriculo")
 	private String miniCurriculo;
 	
+	
+	
+	public Autor(String nome, String email, LocalDate dataNascimento, String miniCurriculo) {
+		this.nome = nome;
+		this.email = email;
+		this.dataNascimento = dataNascimento;
+		this.miniCurriculo = miniCurriculo;
+	}
+	
+	
+	
+	
 }
