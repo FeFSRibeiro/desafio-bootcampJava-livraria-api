@@ -1,7 +1,6 @@
 package br.com.online.livraria.services;
 
-import java.util.Optional;
-
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
@@ -14,6 +13,7 @@ import br.com.online.livraria.dto.LivroDto;
 import br.com.online.livraria.dto.LivroFormDto;
 import br.com.online.livraria.modelo.Autor;
 import br.com.online.livraria.modelo.Livro;
+import br.com.online.livraria.repository.AutorRepository;
 import br.com.online.livraria.repository.LivroRepository;
 
 
@@ -24,7 +24,7 @@ public class LivroService {
 	private LivroRepository livroRepository;
 	
 	@Autowired
-	private AutorService autorService;
+	private AutorRepository autorRepository;
 	
 	private ModelMapper modelMapper = new ModelMapper();
 	
@@ -37,15 +37,21 @@ public class LivroService {
 	
 	@Transactional
 	public LivroDto cadastrar(LivroFormDto dto) {
-		Livro livro = modelMapper.map(dto, Livro.class);
-		Optional<Autor> autor = autorService.buscarPorId(dto.getAutorId());
 		
-		if(autor.isEmpty()){
-			throw new IllegalArgumentException("Autor não encontrado!");
-		}else {
-			livro.setAutor(autor.get());
-		}		
+		Long idAutor = dto.getAutorId();
+		try {
+		Livro livro = modelMapper.map(dto, Livro.class);
+		Autor autor = autorRepository.getById(idAutor);
+
+		livro.setId(null);
+		livro.setAutor(autor);
 		livroRepository.save(livro);
+
 		return modelMapper.map(livro, LivroDto.class);
+		
+	} catch (EntityNotFoundException e) {
+		throw new IllegalArgumentException("Autor inexistente!");
+	}
+
 	}
 }
