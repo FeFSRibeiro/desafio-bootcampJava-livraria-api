@@ -49,6 +49,10 @@ public class Livro{
 	}
 	
 	
-	
-	
+	public void atualizarInformacoes(String titulo, LocalDate dataLancamento, Integer quantidadePaginas) {
+		this.titulo = titulo;
+		this.dataLancamento = dataLancamento;
+		this.quantidadePaginas = quantidadePaginas;
+		
+	}
 }

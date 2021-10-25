@@ -2,6 +2,8 @@ package br.com.online.livraria.services;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import br.com.online.livraria.dto.AtualizacaoLivroFormDto;
 import br.com.online.livraria.dto.LivroDto;
 import br.com.online.livraria.dto.LivroFormDto;
 import br.com.online.livraria.modelo.Autor;
@@ -49,9 +52,30 @@ public class LivroService {
 
 		return modelMapper.map(livro, LivroDto.class);
 		
-	} catch (EntityNotFoundException e) {
+		} catch (EntityNotFoundException e) {
 		throw new IllegalArgumentException("Autor inexistente!");
-	}
+		}
 
 	}
+	
+	@Transactional
+	public LivroDto atualizar(@Valid AtualizacaoLivroFormDto dto) {
+		Livro livro = livroRepository.getById(dto.getId()); 
+		livro.atualizarInformacoes(dto.getTitulo(), dto.getDataLancamento(), dto.getQuantidadePaginas());
+	
+		return modelMapper.map(livro, LivroDto.class);
+	}
+	
+	@Transactional
+	public void remover(@NotNull Long id) {
+		livroRepository.deleteById(id);
+		
+	}
+
+	public LivroDto detalhar(@NotNull Long id) {
+		Livro livro = livroRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());  
+		return modelMapper.map(livro, LivroDto.class);
+	}
+	
+	
 }

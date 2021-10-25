@@ -32,7 +32,7 @@ public class LivroFormDto {
 	private LocalDate dataLancamento;
 	@Positive
 	@Min(100)
-	private int quantidadePaginas;
+	private Integer quantidadePaginas;
 	@NotNull
 	@JsonAlias("autor_id")
 	private Long autorId;

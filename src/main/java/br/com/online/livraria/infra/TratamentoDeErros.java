@@ -4,8 +4,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,21 +15,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import br.com.online.livraria.dto.Erro400Dto;
-import br.com.online.livraria.dto.Erro404Dto;
 import br.com.online.livraria.dto.Erro500Dto;
 import javassist.NotFoundException;
 
 @RestControllerAdvice
 public class TratamentoDeErros {
 	
-	@ExceptionHandler(NotFoundException.class)
+	@ExceptionHandler({NotFoundException.class,EntityNotFoundException.class, EmptyResultDataAccessException.class})
 	@ResponseStatus(code = HttpStatus.NOT_FOUND)
-	public Erro404Dto tratarErro404(Exception ex, HttpServletRequest request) {
-		return new Erro404Dto (
-				LocalDateTime.now(),
-				ex.getClass().toString(),
-				ex.getMessage(),
-				request.getRequestURI());
+	public void tratarErro404() {
 	}
 	
 	@ExceptionHandler(Exception.class)
