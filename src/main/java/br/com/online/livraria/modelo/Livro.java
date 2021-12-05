@@ -40,6 +40,11 @@ public class Livro{
 	@ManyToOne
 	@JoinColumn
 	private Autor autor;
+	
+	
+	@ManyToOne()
+	@JoinColumn(name = "usuario_id")
+	private Usuario usuario;
 
 	public Livro(String titulo, LocalDate dataLancamento, Integer quantidadePaginas, Autor autor) {
 		this.titulo = titulo;
