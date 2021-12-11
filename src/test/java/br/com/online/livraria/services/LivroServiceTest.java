@@ -28,9 +28,7 @@ class LivroServiceTest {
 	@Mock
 	private AutorRepository autorRepository;
 	
-//	@Mock
-//	private AutorService autorService;
-	
+
 	@InjectMocks
 	private LivroService livroService;
 	

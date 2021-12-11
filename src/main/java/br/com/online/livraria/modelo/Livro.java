@@ -46,11 +46,12 @@ public class Livro{
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
 
-	public Livro(String titulo, LocalDate dataLancamento, Integer quantidadePaginas, Autor autor) {
+	public Livro(String titulo, LocalDate dataLancamento, Integer quantidadePaginas, Autor autor, Usuario usuario) {
 		this.titulo = titulo;
 		this.dataLancamento = dataLancamento;
 		this.quantidadePaginas = quantidadePaginas;
 		this.autor = autor;
+		this.usuario = usuario;
 	}
 	
 	

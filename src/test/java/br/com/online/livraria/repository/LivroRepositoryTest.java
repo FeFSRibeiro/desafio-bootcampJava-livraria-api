@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import br.com.online.livraria.dto.ItemLivroDto;
 import br.com.online.livraria.modelo.Autor;
 import br.com.online.livraria.modelo.Livro;
+import br.com.online.livraria.modelo.Usuario;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
@@ -29,10 +31,17 @@ class LivroRepositoryTest {
 	
 	@Autowired
 	private TestEntityManager em; 
-	
+
 	
 	@Test
 	void deveriaRetornarRelatorioDeLivrosPorAutor() {
+		
+		
+		Usuario usuario = new Usuario("Fernanda","feribeiro","123456");
+		usuario.adicionarPerfil(null);
+		em.persist(usuario);
+		
+		
 		Autor autor = new Autor(
 				"Fernanda",
 				"fernanda@email.com",
@@ -55,7 +64,8 @@ class LivroRepositoryTest {
 				"Aprenda Java em 21 dias",
 				LocalDate.of(2021, 10, 2),
 				110,
-				autor
+				autor,
+				usuario
 				);
 		
 		em.persist(l1);
@@ -64,7 +74,8 @@ class LivroRepositoryTest {
 				"Aprenda C# em 21 dias",
 				LocalDate.of(2010, 1, 2),
 				110,
-				autor2
+				autor2,
+				usuario
 				);
 		
 		em.persist(l2);
@@ -74,7 +85,8 @@ class LivroRepositoryTest {
 				"Aprenda Python em 10 dias",
 				LocalDate.of(2018, 8, 2),
 				110,
-				autor
+				autor,
+				usuario
 				);
 		
 		em.persist(l3);
